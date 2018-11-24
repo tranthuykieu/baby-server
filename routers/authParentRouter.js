@@ -5,17 +5,17 @@ const authParentRouter = express.Router();
 const ParentModel = require('../models/parentModel');
 
 authParentRouter.post('/login', (req,res) => {
-    const { username, password } = req.body;
-    if(!username && !password){
-        res.status(400).send({ success: 0, message: "Missing username or password"});
+    const { phoneNumber, password } = req.body;
+    if(!phoneNumber && !password){
+        res.status(400).send({ success: 0, message: "Missing phone number or password"});
     } else {
-        ParentModel.findOne({ username })
+        ParentModel.findOne({ phoneNumber })
             .then(parentFound => {
                 if(!parentFound) res.status(404).send({ success: 0, message: "No parent" })
                 else {
                     const compare = bcrypt.compareSync(password, parentFound.hashPassword);
                     if(compare) {
-                        req.session.parent = { username: parentFound.username, name: parentFound.fullname, parentId: parentFound._id };
+                        req.session.parent = { phoneNumber: parentFound.phoneNumber, name: parentFound.fullname, parentId: parentFound._id };
                         res.send({ success: 0, message: "Login success"});
                     }
                     else res.status(401).send({ success: 0, message: "Wrong password"});

@@ -5,17 +5,17 @@ const authSisterRouter = express.Router();
 const SisterModel = require('../models/sisterModel');
 
 authSisterRouter.post('/login', (req,res) => {
-    const { username, password } = req.body;
-    if(!username && !password){
-        res.status(400).send({ success: 0, message: "Missing username or password"});
+    const { phoneNumber, password } = req.body;
+    if(!phoneNumber && !password){
+        res.status(400).send({ success: 0, message: "Missing phone number or password"});
     } else {
-        SisterModel.findOne({ username })
+        SisterModel.findOne({ phoneNumber })
             .then(sisterFound => {
-                if(!sisterFound) res.status(404).send({ success: 0, message: "No parent" })
+                if(!sisterFound) res.status(404).send({ success: 0, message: "No sister" })
                 else {
                     const compare = bcrypt.compareSync(password, sisterFound.hashPassword);
                     if(compare){
-                        req.session.sister = { username: sisterFound.username, name: sisterFound.fullname, sisterId: sisterFound._id };
+                        req.session.sister = { phoneNumber: sisterFound.phoneNumber, name: sisterFound.fullname, sisterId: sisterFound._id };
                         res.send({ success: 0, message: "Login success"})
                     } 
                     else res.status(401).send({ success: 0, message: "Wrong password"});

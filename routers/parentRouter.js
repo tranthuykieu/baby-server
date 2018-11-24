@@ -15,8 +15,8 @@ parentRouter.get('/', (req, res) => {
 // create new parent 
 parentRouter.post('/', (req, res) => {
     
-    const { username, password, fullname, avatarUrl,
-            sex, age, address, district, city, email, phoneNumber, note,
+    const { phoneNumber, password, fullname, avatarUrl,
+            sex, age, address, district, city, email, note,
             babyGender, babyAge, babyPicture, comment } = req.body;
 
     const salt = bcrypt.genSaltSync();
@@ -24,8 +24,8 @@ parentRouter.post('/', (req, res) => {
 
     ParentModel.
     create(
-        { username, hashPassword, fullname, avatarUrl,
-        sex, age, address, district, city, email, phoneNumber, 
+        { phoneNumber, hashPassword, fullname, avatarUrl,
+        sex, age, address, district, city, email,
         babyGender, babyAge, babyPicture, note, comment}, 
 
         (err, parentCreated) => {
@@ -37,11 +37,11 @@ parentRouter.post('/', (req, res) => {
 // update info
 parentRouter.put('/:parentId', async (req, res) => {
     const { fullname, password, sex, age, avatarUrl,
-            address, district, city, email, phoneNumber,
+            address, district, city, email,
             babyGender, babyAge, babyPicture, note, comment } = req.body;
 
     const updateInfo = { fullname, password, sex, age, avatarUrl,
-                        address, district, city, email, phoneNumber,
+                        address, district, city, email,
                         babyGender, babyAge, babyPicture, note, comment };
 
     try {

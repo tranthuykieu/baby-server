@@ -15,8 +15,8 @@ sisterRouter.get('/', (req, res) => {
 // Create new: POST
 sisterRouter.post('/', (req, res) => {
     
-    const { username, password, fullname, avatarUrl,
-            sex, age, address, district, city, email, phoneNumber, 
+    const { phoneNumber, password, fullname, avatarUrl,
+            sex, age, address, district, city, email,  
             note, comment } = req.body;
 
     const salt = bcrypt.genSaltSync();
@@ -24,8 +24,8 @@ sisterRouter.post('/', (req, res) => {
 
     SisterModel.
     create(
-        { username, hashPassword, fullname, avatarUrl,
-        sex, age, address, district, city, email, phoneNumber, note, comment }, 
+        { phoneNumber, hashPassword, fullname, avatarUrl,
+        sex, age, address, district, city, email, note, comment }, 
         (err, sisterCreated) => {
             if(err) res.status(500).send({ success: 0, err })
             else res.status(201).send({ success: 1, sisterCreated });
@@ -35,11 +35,11 @@ sisterRouter.post('/', (req, res) => {
 // update by id 
 sisterRouter.put('/:sisterId', async (req, res) => {
     const { fullname, password, sex, age, avatarUrl,
-            address, district, city, email, phoneNumber, note, comment } = req.body;
+            address, district, city, email, note, comment } = req.body;
 
 
     const updateInfo = { fullname, password, sex, age, avatarUrl,
-                        address, district, city, email, phoneNumber, note, comment };
+                        address, district, city, email, note, comment };
 
     try {
         let sisterFound = await SisterModel.findById(req.params.sisterId).exec();

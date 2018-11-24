@@ -10,7 +10,7 @@ const CommentSchema = new Schema({
 });
 
 const SisterModel = new Schema({ 
-    username: { type: String, required: true, unique: true },
+    phoneNumber: { type: String, required: true, unique: true },
     hashPassword: { type: String, required: true },
     fullname: { type: String, required: true },
     avatarUrl: { type: String, required: false },
@@ -21,7 +21,6 @@ const SisterModel = new Schema({
     district: { type: String, required: true },
     city: { type: String, required: true },
     email: { type: String, unique: true },
-    phoneNumber: { type: String, required: true, unique: true },
     note: { type: String },
 
     comment: [CommentSchema]

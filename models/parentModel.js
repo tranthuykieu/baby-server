@@ -10,7 +10,7 @@ const CommentSchema = new Schema({
 });
 
 const ParentSchema = new Schema({
-    username: { type: String, required: true, unique: true },
+    phoneNumber: { type: Number, required: true, unique: true },
     hashPassword: { type: String, required: true },
     fullname: { type: String, required: true },
     address: { type: String, required: true },
@@ -20,7 +20,6 @@ const ParentSchema = new Schema({
     sex: { type: String },
     age: { type: Number },
     email: { type: String, unique: true },
-    phoneNumber: { type: Number, required: true, unique: true },
     
     babyGender: { type: String },
     babyAge: { type: Number, required: String },
