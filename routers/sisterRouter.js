@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
+
 const sisterRouter = express.Router();
 
 const SisterModel = require('../models/sisterModel');
@@ -15,7 +16,8 @@ sisterRouter.get('/', (req, res) => {
 // Create new: POST
 sisterRouter.post('/', (req, res) => {
     
-    const { phoneNumber, password, fullname, avatarUrl,
+
+    const { phoneNumber, password, fullname, avatar,
             sex, age, address, district, city, email,  
             note, comment } = req.body;
 
@@ -24,7 +26,7 @@ sisterRouter.post('/', (req, res) => {
 
     SisterModel.
     create(
-        { phoneNumber, hashPassword, fullname, avatarUrl,
+        { phoneNumber, hashPassword, fullname, avatar,
         sex, age, address, district, city, email, note, comment }, 
         (err, sisterCreated) => {
             if(err) res.status(500).send({ success: 0, err })
@@ -34,11 +36,11 @@ sisterRouter.post('/', (req, res) => {
 
 // update by id 
 sisterRouter.put('/:sisterId', async (req, res) => {
-    const { fullname, password, sex, age, avatarUrl,
+    const { fullname, password, sex, age, avatar,
             address, district, city, email, note, comment } = req.body;
 
 
-    const updateInfo = { fullname, password, sex, age, avatarUrl,
+    const updateInfo = { fullname, password, sex, age, avatar,
                         address, district, city, email, note, comment };
 
     try {

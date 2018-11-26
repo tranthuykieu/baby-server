@@ -16,14 +16,19 @@ const ParentSchema = new Schema({
     address: { type: String, required: true },
     district: { type: String, required: true },
     city: { type: String, required: true },
-    avatarUrl: { type: String, required: false },
+
+    // avatar: { type: Buffer, required: true },
+    // contentType: { type: String, required: true },
+
+    avatar: { type: String, required: true },
+
     sex: { type: String },
     age: { type: Number },
     email: { type: String, unique: true },
     
     babyGender: { type: String },
     babyAge: { type: Number, required: String },
-    babyPicture: { type: String, default: "https://www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg"},
+    // babyPicture: { type: String, default: "https://www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg"},
     note: { type: String },
 
     comment: [CommentSchema]
