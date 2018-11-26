@@ -1,5 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
+
+
 const parentRouter = express.Router();
 
 const ParentModel = require('../models/parentModel');
@@ -15,18 +17,18 @@ parentRouter.get('/', (req, res) => {
 // create new parent 
 parentRouter.post('/', (req, res) => {
     
-    const { username, password, fullname, avatarUrl,
-            sex, age, address, district, city, email, phoneNumber, note,
-            babyGender, babyAge, babyPicture, comment } = req.body;
+    const { phoneNumber, password, fullname, avatar,
+            sex, age, address, district, city, email, note,
+            babyGender, babyAge, comment } = req.body;
 
     const salt = bcrypt.genSaltSync();
     const hashPassword = bcrypt.hashSync(password, salt);
 
     ParentModel.
     create(
-        { username, hashPassword, fullname, avatarUrl,
-        sex, age, address, district, city, email, phoneNumber, 
-        babyGender, babyAge, babyPicture, note, comment}, 
+        { phoneNumber, hashPassword, fullname, avatar,
+        sex, age, address, district, city, email,
+        babyGender, babyAge, note, comment}, 
 
         (err, parentCreated) => {
         if(err) res.status(500).send({ success: 0, err })
@@ -36,13 +38,13 @@ parentRouter.post('/', (req, res) => {
 
 // update info
 parentRouter.put('/:parentId', async (req, res) => {
-    const { fullname, password, sex, age, avatarUrl,
-            address, district, city, email, phoneNumber,
-            babyGender, babyAge, babyPicture, note, comment } = req.body;
+    const { fullname, password, sex, age, avatar,
+            address, district, city, email,
+            babyGender, babyAge, note, comment } = req.body;
 
-    const updateInfo = { fullname, password, sex, age, avatarUrl,
-                        address, district, city, email, phoneNumber,
-                        babyGender, babyAge, babyPicture, note, comment };
+    const updateInfo = { fullname, password, sex, age, avatar,
+                        address, district, city, email,
+                        babyGender, babyAge, note, comment };
 
     try {
         let parentFound = await ParentModel.findById(req.params.parentId).exec();
@@ -90,3 +92,4 @@ parentRouter.get('/:parentId', (req, res) => {
 });
 
 module.exports = parentRouter;
+

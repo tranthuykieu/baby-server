@@ -10,21 +10,25 @@ const CommentSchema = new Schema({
 });
 
 const ParentSchema = new Schema({
-    username: { type: String, required: true, unique: true },
+    phoneNumber: { type: Number, required: true, unique: true },
     hashPassword: { type: String, required: true },
     fullname: { type: String, required: true },
     address: { type: String, required: true },
     district: { type: String, required: true },
     city: { type: String, required: true },
-    avatarUrl: { type: String, required: false },
+
+    // avatar: { type: Buffer, required: true },
+    // contentType: { type: String, required: true },
+
+    avatar: { type: String, required: true },
+
     sex: { type: String },
     age: { type: Number },
     email: { type: String, unique: true },
-    phoneNumber: { type: Number, required: true, unique: true },
     
     babyGender: { type: String },
     babyAge: { type: Number, required: String },
-    babyPicture: { type: String, default: "https://www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg"},
+    // babyPicture: { type: String, default: "https://www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg"},
     note: { type: String },
 
     comment: [CommentSchema]
