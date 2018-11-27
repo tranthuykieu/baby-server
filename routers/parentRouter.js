@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-const express = require('express');
-const bcrypt = require('bcrypt-nodejs');
-=======
 const multer = require("multer");
 const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
->>>>>>> 63a8609c6957e53f00510c838dcfe8256fd8a0c5
 
 const parentRouter = express.Router();
 
