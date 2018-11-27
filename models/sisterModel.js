@@ -1,25 +1,29 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const CommentSchema = new Schema({
-    parent: { type: Schema.Types.ObjectId, ref: 'Parent' },
+const CommentSchema = new Schema(
+  {
+    parent: { type: Schema.Types.ObjectId, ref: "Parent" },
     content: { type: String, required: true }
-},{
+  },
+  {
     timestamps: true,
     _id: false
-});
+  }
+);
 
-const SisterModel = new Schema({ 
+const SisterModel = new Schema(
+  {
     phoneNumber: { type: String, required: true, unique: true },
     hashPassword: { type: String, required: true },
     fullname: { type: String, required: true },
-    sex: { type: String, required: true},
+    sex: { type: String, required: true },
     age: { type: Number, required: true },
 
     // avatar: { type: Buffer, required: false },
     // contentType: { type: String, required: true },
 
-    avatar: { type: String, required: true },
+    hashAvatar: { type: String, required: true },
 
     address: { type: String, required: false },
     district: { type: String, required: true },
@@ -28,8 +32,10 @@ const SisterModel = new Schema({
     note: { type: String },
 
     comment: [CommentSchema]
-},{
+  },
+  {
     timestamps: true
-});
+  }
+);
 
-module.exports = mongoose.model('Sister', SisterModel); 
+module.exports = mongoose.model("Sister", SisterModel);

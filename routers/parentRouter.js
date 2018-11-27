@@ -1,94 +1,177 @@
+<<<<<<< HEAD
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
+=======
+const multer = require("multer");
+const express = require("express");
+const bcrypt = require("bcrypt-nodejs");
+>>>>>>> 63a8609c6957e53f00510c838dcfe8256fd8a0c5
 
 const parentRouter = express.Router();
 
-const ParentModel = require('../models/parentModel');
+const ParentModel = require("../models/parentModel");
 
-// get all parents
-parentRouter.get('/', (req, res) => {
-    ParentModel.find({}, (err, parents) => {
-        if(err) res.status(500).send({ success: 0, err})
-        else res.send({ success: 1, parents });
-    }); 
+// get storage for file
+const storage = multer.diskStorage({
+  destination: "./uploadFile",
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
 });
 
-// create new parent 
-parentRouter.post('/', (req, res) => {
-    
-    const { phoneNumber, password, fullname, avatar,
-            sex, age, address, district, city, email, note,
-            babyGender, babyAge, comment } = req.body;
+// upload file
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 }
+});
 
-    const salt = bcrypt.genSaltSync();
-    const hashPassword = bcrypt.hashSync(password, salt);
+// get all parents
+parentRouter.get("/", (req, res) => {
+  ParentModel.find({}, (err, parents) => {
+    if (err) res.status(500).send({ success: 0, err });
+    else res.send({ success: 1, parents });
+  });
+});
 
-    ParentModel.
-    create(
-        { phoneNumber, hashPassword, fullname, avatar,
-        sex, age, address, district, city, email,
-        babyGender, babyAge, note, comment}, 
+// receive image
+parentRouter.post("/upload", upload.single("myAvatar"), function(req, res) {
+  console.log("Request file ---", req.file); // get file here
+  console.log("Upload image successfully!");
+});
 
-        (err, parentCreated) => {
-        if(err) res.status(500).send({ success: 0, err })
-        else res.status(201).send({ success: 1, parentCreated });
-    });
+// create new parent
+parentRouter.post("/", (req, res) => {
+  const {
+    phoneNumber,
+    password,
+    fullname,
+    avatar,
+    sex,
+    age,
+    address,
+    district,
+    city,
+    email,
+    note,
+    babyGender,
+    babyAge,
+    comment
+  } = req.body;
+
+  const hashAvatar = "localhost:1998/" + avatar;
+  const salt = bcrypt.genSaltSync();
+  const hashPassword = bcrypt.hashSync(password, salt);
+
+  ParentModel.create(
+    {
+      phoneNumber,
+      hashPassword,
+      fullname,
+      hashAvatar,
+      sex,
+      age,
+      address,
+      district,
+      city,
+      email,
+      babyGender,
+      babyAge,
+      note,
+      comment
+    },
+
+    (err, parentCreated) => {
+      if (err) res.status(500).send({ success: 0, err });
+      else res.status(201).send({ success: 1, parentCreated });
+    }
+  );
+  console.log("Register successfully!");
 });
 
 // update info
-parentRouter.put('/:parentId', async (req, res) => {
-    const { fullname, password, sex, age, avatar,
-            address, district, city, email,
-            babyGender, babyAge, note, comment } = req.body;
+parentRouter.put("/:parentId", async (req, res) => {
+  const {
+    fullname,
+    password,
+    sex,
+    age,
+    avatar,
+    address,
+    district,
+    city,
+    email,
+    babyGender,
+    babyAge,
+    note,
+    comment
+  } = req.body;
 
-    const updateInfo = { fullname, password, sex, age, avatar,
-                        address, district, city, email,
-                        babyGender, babyAge, note, comment };
+  const updateInfo = {
+    fullname,
+    password,
+    sex,
+    age,
+    avatar,
+    address,
+    district,
+    city,
+    email,
+    babyGender,
+    babyAge,
+    note,
+    comment
+  };
 
-    try {
-        let parentFound = await ParentModel.findById(req.params.parentId).exec();
-        if(!parentFound) res.status(404).send({ success: 0, message: 'Parent not exist' })
-        else {
-            for (let key in updateInfo){ 
-                // change password
-                if(key == 'password' && updateInfo[key]) {
-                    let compare = bcrypt.compareSync(updateInfo.password, parentFound.hashPassword);
-                    if(!compare){
-                        parentFound.hashPassword = bcrypt.hashSync(updateInfo.password, bcrypt.genSaltSync() );
-                    }
-                }
-                else if(updateInfo[key]){
-                    parentFound[key] = updateInfo[key];
-                }
-            }
-            const parentUpdated = await parentFound.save();
-            res.send({ success: 1, parentUpdated });
+  try {
+    let parentFound = await ParentModel.findById(req.params.parentId).exec();
+    if (!parentFound)
+      res.status(404).send({ success: 0, message: "Parent not exist" });
+    else {
+      for (let key in updateInfo) {
+        // change password
+        if (key == "password" && updateInfo[key]) {
+          let compare = bcrypt.compareSync(
+            updateInfo.password,
+            parentFound.hashPassword
+          );
+          if (!compare) {
+            parentFound.hashPassword = bcrypt.hashSync(
+              updateInfo.password,
+              bcrypt.genSaltSync()
+            );
+          }
+        } else if (updateInfo[key]) {
+          parentFound[key] = updateInfo[key];
         }
-    } catch (error) {
-        res.status(500).send({ success: 0, err });
+      }
+      const parentUpdated = await parentFound.save();
+      res.send({ success: 1, parentUpdated });
     }
-
+  } catch (error) {
+    res.status(500).send({ success: 0, err });
+  }
 });
 
 // delete by id
-parentRouter.delete('/:parentId', (req, res) => {
-    ParentModel.findByIdAndRemove(req.params.parentId, (err, parentDeleted) => {
-        if(err) res.status(500).send({ success: 0, err })
-        else if(!parentDeleted) res.status(404).send({ success: 0, message: 'Parent not exist !'})
-        else res.send({ success: 1, message: "Delete success !" });
-    });
+parentRouter.delete("/:parentId", (req, res) => {
+  ParentModel.findByIdAndRemove(req.params.parentId, (err, parentDeleted) => {
+    if (err) res.status(500).send({ success: 0, err });
+    else if (!parentDeleted)
+      res.status(404).send({ success: 0, message: "Parent not exist !" });
+    else res.send({ success: 1, message: "Delete success !" });
+  });
 });
 
 //get one by id
-parentRouter.get('/:parentId', (req, res) => {
-    ParentModel.findById(req.params.parentId)
+parentRouter.get("/:parentId", (req, res) => {
+  ParentModel.findById(req.params.parentId)
     .populate("comment.sister", "fullname avatarUrl")
     .exec((err, parentFound) => {
-        if(err) res.status(500).send({ success: 0, err })
-        else if(!parentFound) res.status(404).send({ success: 0, message: 'Parent not found.' })
-        else res.send({ success: 1, parentFound });
+      if (err) res.status(500).send({ success: 0, err });
+      else if (!parentFound)
+        res.status(404).send({ success: 0, message: "Parent not found." });
+      else res.send({ success: 1, parentFound });
     });
 });
 
 module.exports = parentRouter;
-
