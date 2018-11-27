@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 
-
 const parentRouter = express.Router();
 
 const ParentModel = require('../models/parentModel');
