@@ -26,6 +26,10 @@ const SisterModel = new Schema(
 
     hashAvatar: { type: String, required: true },
 
+    experience: { type: String },
+    billingRate: { type: String },
+    availability: { type: String },
+
     address: { type: String, required: false },
     district: { type: String, required: true },
     city: { type: String, required: true },
