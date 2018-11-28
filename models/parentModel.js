@@ -16,7 +16,8 @@ const ParentSchema = new Schema(
   {
     phoneNumber: { type: Number, required: true, unique: true },
     hashPassword: { type: String, required: true },
-    fullname: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
     address: { type: String, required: true },
     district: { type: String, required: true },
     city: { type: String, required: true },

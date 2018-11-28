@@ -16,7 +16,8 @@ const SisterModel = new Schema(
   {
     phoneNumber: { type: String, required: true, unique: true },
     hashPassword: { type: String, required: true },
-    fullname: { type: String, required: true },
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
     sex: { type: String, required: true },
     age: { type: Number, required: true },
 

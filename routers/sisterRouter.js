@@ -39,7 +39,8 @@ sisterRouter.post("/", (req, res) => {
   const {
     phoneNumber,
     password,
-    fullname,
+    firstname,
+    lastname,
     avatar,
     sex,
     age,
@@ -59,7 +60,8 @@ sisterRouter.post("/", (req, res) => {
     {
       phoneNumber,
       hashPassword,
-      fullname,
+      firstname,
+      lastname,
       hashAvatar,
       sex,
       age,
@@ -81,7 +83,8 @@ sisterRouter.post("/", (req, res) => {
 // update by id
 sisterRouter.put("/:sisterId", async (req, res) => {
   const {
-    fullname,
+    firstname,
+    lastname,
     password,
     sex,
     age,
@@ -95,7 +98,8 @@ sisterRouter.put("/:sisterId", async (req, res) => {
   } = req.body;
 
   const updateInfo = {
-    fullname,
+    firstname,
+    lastname,
     password,
     sex,
     age,

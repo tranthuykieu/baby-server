@@ -39,7 +39,8 @@ parentRouter.post("/", (req, res) => {
   const {
     phoneNumber,
     password,
-    fullname,
+    firstname,
+    lastname,
     avatar,
     sex,
     age,
@@ -61,7 +62,8 @@ parentRouter.post("/", (req, res) => {
     {
       phoneNumber,
       hashPassword,
-      fullname,
+      firstname,
+      lastname,
       hashAvatar,
       sex,
       age,
@@ -86,11 +88,12 @@ parentRouter.post("/", (req, res) => {
 // update info
 parentRouter.put("/:parentId", async (req, res) => {
   const {
-    fullname,
+    firstname,
+    lastname,
     password,
     sex,
     age,
-    avatar,
+    hastAvatar,
     address,
     district,
     city,
