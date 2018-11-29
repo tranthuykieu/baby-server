@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 // upload file
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1000000 }
+  limits: { fileSize: 10000000 }
 });
 
 //show all sister: GET -> /api/sister
